@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SryModz | Advanced Menu</title>
+<style>
+:root {
+  --accent: #3047ff;
+  --accent2: #27109b;
+  --glow: #5d6cff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top right,#48536b,#171525 55%,#080811);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+.frame {
+  min-height: 100vh;
+  padding: 9px;
+  border: 7px solid transparent;
+  border-image: linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red) 1;
+}
+.app {
+  display: grid;
+  grid-template-columns: 235px 1fr;
+  gap: 15px;
+  max-width: 1400px;
+  margin: auto;
+}
+.sidebar {
+  padding: 12px;
+  background: #170a39f5;
+  border: 1px solid #8c70ff77;
+}
+.brand {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rainbow 4s linear infinite, float 2s ease-in-out infinite;
+}
+.brand small {
+  display: block;
+  font: 10px Arial,sans-serif;
+  color: #c8baff;
+  letter-spacing: 3px;
+}
+@keyframes rainbow {
+  to { background-position: 300% center; }
+}
+@keyframes float {
+  50% { transform: translateY(-3px); }
+}
+.games {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+button, select, input {
+  cursor: pointer;
+}
+.games button, .nav button {
+  color: white;
+  background: transparent;
+  border: 1px solid #ffffff25;
+  padding: 10px;
+}
+.games button { flex: 1; }
+button.active, .nav button.active {
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  border-color: #aab3ff;
+}
+.nav { display: grid; gap: 4px; }
+.nav button { text-align: left; font-size: 14px; }
+main { min-width: 0; }
+h1 {
+  font-size: clamp(55px,10vw,120px);
+  line-height: .85;
+  text-shadow: 5px 6px black;
+  transform: rotate(-2deg);
+  margin: 30px 12px;
+}
+.panel {
+  background: #090914ed;
+  border: 1px solid #ffffff30;
+  padding: 20px;
+}
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #ffffff25;
+}
+.status { color: #75ffb2; font-size: 11px; }
+.description { color: #c1b8e2; font-size: 13px; }
+.options {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 8px;
+}
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px;
+  background: #ffffff09;
+  border: 1px solid #ffffff20;
+  font-size: 13px;
+}
+.option.focused {
+  outline: 2px solid #8b98ff;
+  background: #25205a;
+}
+.toggle {
+  flex-shrink: 0;
+  width: 43px;
+  height: 24px;
+  border-radius: 20px;
+  border: 1px solid #8279a7;
+  background: #292238;
+  position: relative;
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  border-radius: 50%;
+  background: white;
+}
+.toggle[aria-checked="true"] {
+  background: #15965f;
+}
+.toggle[aria-checked="true"]::after { left: 22px; }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+select, input {
+  background: #17132b;
+  color: white;
+  border: 1px solid #6c6297;
+  padding: 9px;
+}
+.toast {
+  color: #aaffd0;
+  font-size: 12px;
+  margin-top: 15px;
+  min-height: 18px;
+}
+footer {
+  margin: 15px 0;
+  font-size: 11px;
+  color: #c4bddf;
+}
+@media(max-width:700px) {
+  .app { grid-template-columns: 1fr; }
+  .nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .options { grid-template-columns: 1fr; }
+  h1 { margin: 20px 8px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .brand { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="frame">
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">SryModz
+    <small>ADVANCED MENU</small>
+  </div>
+  <div class="games">
+    <button class="active" data-game="Warzone">WARZONE</button>
+    <button data-game="GTA V">GTA V</button>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <footer>SryModz • BUILD 3.0</footer>
+</aside>
+<main>
+  <h1>MOD<br>MENU</h1>
+  <section class="panel">
+    <div class="panel-head">
+      <h2 id="title">Main Menu</h2>
+      <span class="status" id="status">● READY</span>
+    </div>
+    <p class="description" id="description">
+      Passe dein Menü und deine lokalen Profile an.
+    </p>
+    <div id="custom"></div>
+    <div class="options" id="options"></div>
+    <div class="toast" id="toast" aria-live="polite">Menü bereit.</div>
+  </section>
+  <footer id="profile">WARZONE PROFILE ACTIVE</footer>
+</main>
+</div>
+</div>
+
+<script>
+const categories = [
+  "Main Menu","Player","Aimbot","Wallhack","Menu Colors",
+  "XP Lobby","Visuals","Weapons","Maps","Vehicles",
+  "Settings","Messages","Team Tools","Profiles","About"
+];
+
+const settings = {
+  "Main Menu":["Show Menu Status","Animated Logo","Compact Layout","High Contrast"],
+  "Player":["Player HUD","Session Timer","Player Notes","Sensitivity Preset"],
+  "Aimbot":["Aim Settings Profile","Target Priority Notes","Smoothing Preset","Crosshair Overlay"],
+  "Wallhack":["Overlay Style Preview","Highlight Color Preview","Radar Panel","Visibility Preset"],
+  "Menu Colors":["Rainbow Name","Neon Glow","Custom Accent","Background Style"],
+  "XP Lobby":["XP Session Notes","Progress Checklist","Lobby Preparation","Session Counter"],
+  "Visuals":["Night Contrast","Neon Glow","Reduced Motion","FOV Notes"],
+  "Weapons":["Primary Loadout Notes","Secondary Loadout Notes","Attachment Checklist","Loadout Preset"],
+  "Maps":["Route Planner","POI Checklist","Map Notes","Waypoint List"],
+  "Vehicles":["Vehicle Preset Notes","Garage Checklist","Driving Sensitivity"],
+  "Settings":["Controller Layout","Audio Mix Notes","Display Preset","Reset Current Profile"],
+  "Messages":["Show Notifications","Compact Messages","Status Toasts"],
+  "Team Tools":["Squad Notes","Role Checklist","Callout List"],
+  "Profiles":["Warzone Profile","GTA V Profile","Show Active Profile"],
+  "About":["Build Information","Keyboard Controls","Local Settings Status"]
+};
+
+let game = "Warzone";
+let current = "Main Menu";
+let focusIndex = 0;
+const states = {};
+
+const nav = document.getElementById("nav");
+const options = document.getElementById("options");
+const title = document.getElementById("title");
+const status = document.getElementById("status");
+const toast = document.getElementById("toast");
+const custom = document.getElementById("custom");
+
+function stateKey(label) {
+  return `${game}:${current}:${label}`;
+}
+function enabled(label) {
+  return !!states[stateKey(label)];
+}
+function notify(message) {
+  toast.textContent = message;
+}
+function renderNav() {
+  nav.innerHTML = "";
+  categories.forEach(name => {
+    const button = document.createElement("button");
+    button.textContent = name;
+    button.className = name === current ? "active" : "";
+    button.addEventListener("click", () => {
+      current = name;
+      focusIndex = 0;
+      renderNav();
+      renderSection();
+    });
+    nav.appendChild(button);
+  });
+}
+function renderColors() {
+  const wrap = document.createElement("div");
+  wrap.className = "controls";
+
+  const label = document.createElement("label");
+  label.textContent = "Menüfarbe ";
+  const picker = document.createElement("input");
+  picker.type = "color";
+  picker.value = "#3047ff";
+  picker.addEventListener("input", () => {
+    document.documentElement.style.setProperty("--accent", picker.value);
+    document.documentElement.style.setProperty("--glow", picker.value);
+    notify("Menüfarbe geändert.");
+  });
+
+  const themeLabel = document.createElement("label");
+  themeLabel.textContent = "Design ";
+  const select = document.createElement("select");
+  [
+    ["blue","Blue Neon","#3047ff","#27109b"],
+    ["purple","Purple","#9b4dff","#4d168f"],
+    ["green","Green","#20d878","#075b45"],
+    ["red","Crimson","#ff3c5c","#8f1233"]
+  ].forEach(([value,name]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+  select.addEventListener("change", () => {
+    const colors = {
+      blue:["#3047ff","#27109b"],
+      purple:["#9b4dff","#4d168f"],
+      green:["#20d878","#075b45"],
+      red:["#ff3c5c","#8f1233"]
+    }[select.value];
+    document.documentElement.style.setProperty("--accent",colors[0]);
+    document.documentElement.style.setProperty("--accent2",colors[1]);
+    notify("Design geändert: "+select.options[select.selectedIndex].text);
+  });
+  wrap.append(label,picker,themeLabel,select);
+  custom.appendChild(wrap);
+}
+function renderSection() {
+  title.textContent = current;
+  custom.innerHTML = "";
+  options.innerHTML = "";
+
+  if (current === "Menu Colors") renderColors();
+
+  settings[current].forEach((label,index) => {
+    const row = document.createElement("div");
+    row.className = "option" + (index === focusIndex ? " focused" : "");
+
+    const text = document.createElement("span");
+    text.textContent = label;
+
+    const toggle = document.createElement("button");
+    toggle.className = "toggle";
+    toggle.setAttribute("role","switch");
+    toggle.setAttribute("aria-checked",String(enabled(label)));
+    toggle.setAttribute("aria-label",label+" umschalten");
+
+    toggle.addEventListener("click",() => {
+      states[stateKey(label)] = !enabled(label);
+      focusIndex = index;
+      renderSection();
+      notify(label+" "+(enabled(label) ? "AKTIVIERT" : "DEAKTIVIERT"));
+    });
+
+    row.append(text,toggle);
+    row.addEventListener("click",event => {
+      if (event.target !== toggle) {
+        focusIndex = index;
+        renderSection();
+      }
+    });
+    options.appendChild(row);
+  });
+
+  const active = settings[current].filter(enabled).length;
+  status.textContent = active ? "● "+active+" ACTIVE" : "● READY";
+  document.getElementById("description").textContent =
+    game+" • "+current.toUpperCase()+" • LOKALE EINSTELLUNGEN";
+  notify(active+" Einstellungen aktiv.");
+}
+
+document.querySelectorAll("[data-game]").forEach(button => {
+  button.addEventListener("click",() => {
+    game = button.dataset.game;
+    current = "Main Menu";
+    focusIndex = 0;
+    document.querySelectorAll("[data-game]").forEach(item =>
+      item.classList.toggle("active",item === button)
+    );
+    document.getElementById("profile").textContent =
+      game.toUpperCase()+" PROFILE ACTIVE";
+    renderNav();
+    renderSection();
+  });
+});
+
+document.addEventListener("keydown",event => {
+  const navButtons = [...nav.querySelectorAll("button")];
+  if (event.key === "Escape") {
+    current = "Main Menu";
+    focusIndex = 0;
+    renderNav();
+    renderSection();
+    return;
+  }
+
+  if (!["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Enter"," "].includes(event.key)) return;
+
+  if (nav.contains(document.activeElement)) {
+    const index = navButtons.indexOf(document.activeElement);
+    if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+      event.preventDefault();
+      navButtons[(index+1)%navButtons.length].focus();
+    }
+    if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+      event.preventDefault();
+      navButtons[(index-1+navButtons.length)%navButtons.length].focus();
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      document.activeElement.click();
+    }
+    return;
+  }
+
+  const labels = settings[current];
+  if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+    event.preventDefault();
+    focusIndex = (focusIndex+1)%labels.length;
+    renderSection();
+  }
+  if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+    event.preventDefault();
+    focusIndex = (focusIndex-1+labels.length)%labels.length;
+    renderSection();
+  }
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    const label = labels[focusIndex];
+    states[stateKey(label)] = !enabled(label);
+    renderSection();
+  }
+});
+
+renderNav();
+renderSection();
+</script>
+</body>
+</html>
